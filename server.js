@@ -1,18 +1,13 @@
 const express = require("express");
-const expressGraphQl = require("express-graphql");
-const graphql = require("graphql");
-const app = express();
 
-const { GraphQlSchema, GraphQlObjectType } = require("graphql");
-const schema = new GraphQlSchema({
-  query: new GraphQlObjectType({
-    name: "Hello world",
-  }),
-});
+const schema = require("./schema");
+const { graphqlHTTP } = require("express-graphql");
+const app = express();
 
 app.use(
   "/graphql",
-  expressGraphQl({
+  graphqlHTTP({
+    schema,
     graphiql: true,
   })
 );
