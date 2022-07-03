@@ -10,34 +10,16 @@ const {
 } = graphql;
 
 const books = [
-  {
-    name: "kitob",
-    genre: "Fantasy",
-    id: "1",
-    authorId: "1",
-  },
-  {
-    name: "kniga",
-    genre: "Fantasy",
-    authorId: "2",
-    id: "2",
-  },
+  { name: "kitob", genre: "Fantasy", id: "1", authorId: "1" },
+  { name: "kniga", genre: "Fantasy", authorId: "2", id: "2" },
   { name: "Book", genre: "fantasy", id: "3", authorId: "3" },
   { name: "Boook2", genre: "fantasy", id: "5", authorId: "2" },
   { name: "Boook3", genre: "fantasy", id: "5", authorId: "3" },
   { name: "Book3", genre: "fantasy", id: "5", authorId: "3" },
 ];
 const authors = [
-  {
-    name: "Jamshid",
-    age: 20,
-    id: "1",
-  },
-  {
-    name: "Mironshoh",
-    age: 20,
-    id: "2",
-  },
+  { name: "Jamshid", age: 20, id: "1" },
+  { name: "Mironshoh", age: 20, id: "2" },
   { name: "Umid", age: 20, id: "3" },
 ];
 
@@ -48,9 +30,9 @@ const AuthorType = new GraphQLObjectType({
     name: { type: GraphQLString },
     age: { type: GraphQLInt },
     books: {
-      type: BookType,
+      type: new GraphQLList(BookType),
       resolve(parent, args) {
-        return lodash.find(books, { authorId: parent.id });
+        return lodash.filter(books, { authorId: parent.id });
       },
     },
   }),
@@ -64,7 +46,6 @@ const BookType = new GraphQLObjectType({
     author: {
       type: AuthorType,
       resolve(parent, args) {
-        console.log(parent);
         return lodash.find(authors, { id: parent.authorId });
       },
     },
