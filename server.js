@@ -3,14 +3,17 @@ const mongoose = require("mongoose");
 const schema = require("./schema");
 const { graphqlHTTP } = require("express-graphql");
 const app = express();
+const dotenv = require('dotenv');
+dotenv.config({ path: './config.env' });
+
 
 mongoose
-  .connect(
-    "mongodb+srv://Jamshid:jamshid01@cluster0.3llz0fb.mongodb.net/graphQL?retryWrites=true&w=majority",
-    {}
-  )
+  .connect(process.env.MONGO_DB, {})
   .then(() => {
-    console.log("DB connected");
+    console.log('DB connected');
+  })
+  .catch((err) => {
+    console.log(`ERROR: ${err}`);
   });
 
 app.use(
